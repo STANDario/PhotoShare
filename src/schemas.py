@@ -1,14 +1,23 @@
-from datetime import datetime
 from pydantic import BaseModel
-from typing import Optional
 
 
-class PostSingle(BaseModel):
-    img: str
+class ImageModel(BaseModel):
     id: int
-    url_original: str
-    description: Optional[str]
-    pub_date: datetime
+    url: str
+    description: str
+    public_id: str
 
-    class ConfigDict:
-        from_attributes = True
+
+class ImageURLResponse(BaseModel):
+    url: str
+    description: str
+
+
+class ImageUpdateResponse(BaseModel):
+    id: int
+    description: str
+
+
+class ImageDeleteModel(BaseModel):
+    id: int
+    detail: str = "Image has been deleted"
