@@ -16,6 +16,10 @@ async def get_photo_by_id(image_id: int, db: Session) -> str | None:
     return db.query(Image).filter(Image.id == image_id).first()
 
 
+async def get_photo_by_desc(description: str, db: Session):
+    return db.query(Image).filter(Image.description.contains(description.lower())).all()
+
+
 async def update_photo(image_id: int, description: str, db: Session):
     image = await get_photo_by_id(image_id, db)
     if image:

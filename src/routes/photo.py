@@ -1,8 +1,10 @@
+from typing import List
+
 from fastapi import APIRouter, Depends, status, UploadFile, File, HTTPException
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
-from src.schemas import ImageModel, ImageURLResponse, ImageUpdateResponse, ImageDeleteModel
+from src.schemas import ImageModel, ImageURLResponse, ImageUpdateResponse, ImageDeleteModel, ImageDescResponse
 from src.database.db import get_db
 from src.services.cloudinary_service import CloudImage
 from src.repository import photo as repository_photo
@@ -30,6 +32,20 @@ async def get_photo_url(image_id: int, db: Session = Depends(get_db)):
 
         return image
 
+    except SQLAlchemyError as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+
+
+# Пошук за входженням опису в світлину
+@router.get("/search", response_model=List[ImageDescResponse])
+async def get_photo_by_description(description: str, db: Session = Depends(get_db)):
+    try:
+        image = await repository_photo.get_photo_by_desc(description, db)
+        if not image:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Image not found")
+        
+        return image
+    
     except SQLAlchemyError as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 

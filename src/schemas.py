@@ -13,6 +13,12 @@ class ImageURLResponse(BaseModel):
     description: str
 
 
+class ImageDescResponse(BaseModel):
+    id: int
+    url: str
+    description: str
+
+
 class ImageUpdateResponse(BaseModel):
     id: int
     description: str
