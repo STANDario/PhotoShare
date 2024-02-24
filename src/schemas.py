@@ -13,7 +13,7 @@ class ImageURLResponse(BaseModel):
     description: str
 
 
-class ImageDescResponse(BaseModel):
+class ImageAllResponse(BaseModel):
     id: int
     url: str
     description: str
@@ -27,3 +27,17 @@ class ImageUpdateResponse(BaseModel):
 class ImageDeleteModel(BaseModel):
     id: int
     detail: str = "Image has been deleted"
+
+
+class ImageChangeResponse(BaseModel):
+    image: ImageModel
+    detail: str
+
+
+class ImageChangeSizeModel(BaseModel):
+    id: int
+    width: int = 1920
+
+
+class ImageTransformModel(BaseModel):
+    id: int

@@ -1,5 +1,6 @@
 import hashlib
 from datetime import datetime
+from typing import Tuple
 
 import cloudinary
 import cloudinary.uploader
@@ -37,3 +38,19 @@ class CloudImage:
     def delete_image(public_id: str):
         cloudinary.uploader.destroy(public_id, resource_type="image")
         return f"{public_id} deleted"
+
+    @staticmethod
+    def change_size(public_id: str, width: int) -> Tuple[str, str]:
+        image = cloudinary.CloudinaryImage(public_id).image(
+            transformation=[{"width": width, "crop": "pad"}]
+        )
+        url = image.split('"')
+        upload_image = cloudinary.uploader.upload(url[1], folder="photo_share")
+        return upload_image["url"], upload_image["public_id"]
+
+    @staticmethod
+    def fade_edge(public_id: str, effect: str = "vignette") -> Tuple[str, str]:
+        image = cloudinary.CloudinaryImage(public_id).image(effect=effect)
+        url = image.split('"')
+        upload_image = cloudinary.uploader.upload(url[1], folder="photo_share")
+        return upload_image["url"], upload_image["public_id"]
