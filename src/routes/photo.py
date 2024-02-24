@@ -31,6 +31,7 @@ async def upload_photo(description: str = None, file: UploadFile = File(), db: S
     return image
 
 
+# Пошук світлини за id
 @router.get("/{image_id}]", response_model=ImageURLResponse)
 async def get_photo_url(image_id: int, db: Session = Depends(get_db)):
     try:
@@ -102,6 +103,7 @@ async def delete_model(image_id, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
 
+# Міняємо розмір зображення, погрішує якість при зміні
 @router.post("/change_size", response_model=ImageChangeResponse, status_code=status.HTTP_201_CREATED)
 async def change_size(body: ImageChangeSizeModel, db: Session = Depends(get_db)):
     image = await repository_photo.change_size_photo(body, db)
@@ -109,6 +111,7 @@ async def change_size(body: ImageChangeSizeModel, db: Session = Depends(get_db))
     return image
 
 
+# Додаємо вицвілі кути на зображення
 @router.post("/fade_edges", response_model=ImageChangeResponse, status_code=status.HTTP_201_CREATED)
 async def fade_edges_image(body: ImageTransformModel, db: Session = Depends(get_db)):
     image = await repository_photo.fade_edge_photo(body, db)
