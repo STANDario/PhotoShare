@@ -3,7 +3,7 @@ from fastapi import status, HTTPException
 
 from src.entity.models import Image
 from src.services.cloudinary_service import CloudImage
-from src.schemas import ImageChangeSizeModel, ImageChangeResponse, ImageModel, ImageTransformModel
+from src.schemas import ImageChangeResponse, ImageModel
 
 
 async def add_image(url: str, public_id: str, description: str, db: Session) -> Image | None:
@@ -43,13 +43,13 @@ async def delete_photo(image_id: int, db: Session):
     return image
 
 
-async def change_size_photo(body: ImageChangeSizeModel, db: Session):
-    image = await get_photo_by_id(body.id, db)
+async def change_size_photo(image_id: int, width: int, db: Session):
+    image = await get_photo_by_id(image_id, db)
 
     if image is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Image not found")
 
-    url, public_id = CloudImage.change_size(image.public_id, body.width)
+    url, public_id = CloudImage.change_size(image.public_id, width)
     new_image = Image(url=url, public_id=public_id, description=image.description)
     db.add(new_image)
     db.commit()
@@ -65,13 +65,35 @@ async def change_size_photo(body: ImageChangeSizeModel, db: Session):
     return ImageChangeResponse(image=image_model, detail="Image has been resized and added")
 
 
-async def fade_edge_photo(body: ImageTransformModel, db: Session):
-    image = await get_photo_by_id(body.id, db)
+async def fade_edge_photo(image_id, db: Session):
+    image = await get_photo_by_id(image_id, db)
 
     if image is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Image not found")
 
     url, public_id = CloudImage.fade_edge(image.public_id)
+    new_image = Image(url=url, public_id=public_id, description=image.description)
+    db.add(new_image)
+    db.commit()
+    db.refresh(new_image)
+
+    image_model = ImageModel(
+        id=new_image.id,
+        url=new_image.url,
+        description=new_image.description,
+        public_id=new_image.public_id
+    )
+
+    return ImageChangeResponse(image=image_model, detail="Image with fade effect has been added")
+
+
+async def black_white_photo(image_id, db: Session):
+    image = await get_photo_by_id(image_id, db)
+
+    if image is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Image not found")
+
+    url, public_id = CloudImage.black_white(image.public_id)
     new_image = Image(url=url, public_id=public_id, description=image.description)
     db.add(new_image)
     db.commit()

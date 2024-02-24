@@ -10,9 +10,7 @@ from src.schemas import (
     ImageUpdateResponse,
     ImageDeleteModel,
     ImageAllResponse,
-    ImageChangeResponse,
-    ImageChangeSizeModel,
-    ImageTransformModel
+    ImageChangeResponse
 )
 from src.database.db import get_db
 from src.services.cloudinary_service import CloudImage
@@ -105,15 +103,23 @@ async def delete_model(image_id, db: Session = Depends(get_db)):
 
 # Міняємо розмір зображення, погрішує якість при зміні
 @router.post("/change_size", response_model=ImageChangeResponse, status_code=status.HTTP_201_CREATED)
-async def change_size(body: ImageChangeSizeModel, db: Session = Depends(get_db)):
-    image = await repository_photo.change_size_photo(body, db)
+async def change_size(image_id: int, width: int, db: Session = Depends(get_db)):
+    image = await repository_photo.change_size_photo(image_id, width, db)
 
     return image
 
 
 # Додаємо вицвілі кути на зображення
 @router.post("/fade_edges", response_model=ImageChangeResponse, status_code=status.HTTP_201_CREATED)
-async def fade_edges_image(body: ImageTransformModel, db: Session = Depends(get_db)):
-    image = await repository_photo.fade_edge_photo(body, db)
+async def fade_edges_image(image_id, db: Session = Depends(get_db)):
+    image = await repository_photo.fade_edge_photo(image_id, db)
+
+    return image
+
+
+# Робить фото чорно-білим
+@router.post("/black_white", response_model=ImageChangeResponse, status_code=status.HTTP_201_CREATED)
+async def black_white_image(image_id, db: Session = Depends(get_db)):
+    image = await repository_photo.black_white_photo(image_id, db)
 
     return image
