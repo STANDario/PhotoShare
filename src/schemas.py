@@ -32,12 +32,3 @@ class ImageDeleteModel(BaseModel):
 class ImageChangeResponse(BaseModel):
     image: ImageModel
     detail: str
-
-
-class ImageChangeSizeModel(BaseModel):
-    id: int
-    width: int = 1920
-
-
-class ImageTransformModel(BaseModel):
-    id: int

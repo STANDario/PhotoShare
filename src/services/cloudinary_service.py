@@ -54,3 +54,10 @@ class CloudImage:
         url = image.split('"')
         upload_image = cloudinary.uploader.upload(url[1], folder="photo_share")
         return upload_image["url"], upload_image["public_id"]
+
+    @staticmethod
+    def black_white(public_id: str, effect: str = "art:audrey") -> Tuple[str, str]:
+        image = cloudinary.CloudinaryImage(public_id).image(effect=effect)
+        url = image.split('"')
+        upload_image = cloudinary.uploader.upload(url[1], folder="photo_share")
+        return upload_image["url"], upload_image["public_id"]
