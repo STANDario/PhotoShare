@@ -4,11 +4,19 @@ from fastapi import APIRouter, Depends, status, UploadFile, File, HTTPException
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
-from src.schemas import ImageModel, ImageURLResponse, ImageUpdateResponse, ImageDeleteModel, ImageDescResponse
+from src.schemas import (
+    ImageModel,
+    ImageURLResponse,
+    ImageUpdateResponse,
+    ImageDeleteModel,
+    ImageAllResponse,
+    ImageChangeResponse,
+    ImageChangeSizeModel,
+    ImageTransformModel
+)
 from src.database.db import get_db
 from src.services.cloudinary_service import CloudImage
 from src.repository import photo as repository_photo
-
 
 router = APIRouter(prefix="/images", tags=["images"])
 
@@ -37,20 +45,34 @@ async def get_photo_url(image_id: int, db: Session = Depends(get_db)):
 
 
 # Пошук за входженням опису в світлину
-@router.get("/search", response_model=List[ImageDescResponse])
+@router.get("/search", response_model=List[ImageAllResponse])
 async def get_photo_by_description(description: str, db: Session = Depends(get_db)):
     try:
         image = await repository_photo.get_photo_by_desc(description, db)
         if not image:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Image not found")
-        
+
         return image
-    
+
     except SQLAlchemyError as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
 
-@router.patch("/{image_id}/update", response_model=ImageUpdateResponse)
+# Повертаємо усі світлини
+@router.get("/get_all", response_model=List[ImageAllResponse])
+async def get_all_photo(db: Session = Depends(get_db)):
+    try:
+        image = await repository_photo.get_photo_all(db)
+        if not image:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Image not found")
+
+        return image
+
+    except SQLAlchemyError as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+
+
+@router.put("/{image_id}/update", response_model=ImageUpdateResponse)
 async def update_photo(image_id: int, description: str, db: Session = Depends(get_db)):
     try:
         image = await repository_photo.get_photo_by_id(image_id, db)
@@ -78,3 +100,17 @@ async def delete_model(image_id, db: Session = Depends(get_db)):
     except SQLAlchemyError as e:
         db.rollback()
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+
+
+@router.post("/change_size", response_model=ImageChangeResponse, status_code=status.HTTP_201_CREATED)
+async def change_size(body: ImageChangeSizeModel, db: Session = Depends(get_db)):
+    image = await repository_photo.change_size_photo(body, db)
+
+    return image
+
+
+@router.post("/fade_edges", response_model=ImageChangeResponse, status_code=status.HTTP_201_CREATED)
+async def fade_edges_image(body: ImageTransformModel, db: Session = Depends(get_db)):
+    image = await repository_photo.fade_edge_photo(body, db)
+
+    return image
