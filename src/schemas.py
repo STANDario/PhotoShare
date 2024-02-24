@@ -1,6 +1,5 @@
 from pydantic import BaseModel
 
-
 class ImageModel(BaseModel):
     id: int
     url: str
@@ -31,4 +30,4 @@ class ImageDeleteModel(BaseModel):
 
 class ImageChangeResponse(BaseModel):
     image: ImageModel
-    detail: str
+    detail: str  
