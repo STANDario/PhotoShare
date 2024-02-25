@@ -1,4 +1,9 @@
+from typing import List
+
 from pydantic import BaseModel
+
+from src.schemas.tag_schemas import TagModel
+
 
 class ImageModel(BaseModel):
     id: int
@@ -10,12 +15,14 @@ class ImageModel(BaseModel):
 class ImageURLResponse(BaseModel):
     url: str
     description: str
+    tags: List[TagModel] | None
 
 
 class ImageAllResponse(BaseModel):
     id: int
     url: str
     description: str
+    tags: List[TagModel] | None
 
 
 class ImageUpdateResponse(BaseModel):
@@ -30,4 +37,4 @@ class ImageDeleteModel(BaseModel):
 
 class ImageChangeResponse(BaseModel):
     image: ImageModel
-    detail: str  
+    detail: str 

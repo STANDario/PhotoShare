@@ -1,6 +1,5 @@
-from pydantic import BaseModel, EmailStr, Field, field_validator
+from pydantic import BaseModel
 from pydantic_settings import SettingsConfigDict
-from datetime import datetime
 
 
 class TagModel(BaseModel):
@@ -15,3 +14,8 @@ class TagResponse(TagModel):
 
 class AddTag(BaseModel):
     detail: str = "Image tags has been updated"
+
+
+class AddTagToPhoto(BaseModel):
+    detail: str = "Tag successfully added to photo"
+    tag: str

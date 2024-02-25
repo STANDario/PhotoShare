@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, status, UploadFile, File, HTTPException
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
-from src.schemas import (
+from src.schemas.photo_schemas import (
     ImageModel,
     ImageURLResponse,
     ImageUpdateResponse,
@@ -12,6 +12,7 @@ from src.schemas import (
     ImageAllResponse,
     ImageChangeResponse
 )
+from src.schemas.tag_schemas import AddTag
 from src.database.db import get_db
 from src.services.cloudinary_service import CloudImage
 from src.repository import photo as repository_photo
@@ -123,3 +124,14 @@ async def black_white_image(image_id, db: Session = Depends(get_db)):
     image = await repository_photo.black_white_photo(image_id, db)
 
     return image
+
+
+@router.post("/add_tag", response_model=AddTag)
+async def add_tag(image_id: int, tag: str, db: Session = Depends(get_db)):
+    try:
+        image = await repository_photo.add_tag(image_id, tag, db)
+        return image
+
+    except SQLAlchemyError as e:
+        db.rollback()
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
