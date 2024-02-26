@@ -30,20 +30,6 @@ async def upload_photo(description: str = None, file: UploadFile = File(), db: S
     return image
 
 
-# Пошук світлини за id
-@router.get("/{image_id}]", response_model=ImageURLResponse)
-async def get_photo_url(image_id: int, db: Session = Depends(get_db)):
-    try:
-        image = await repository_photo.get_photo_by_id(image_id, db)
-        if not image:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Image not found")
-
-        return image
-
-    except SQLAlchemyError as e:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
-
-
 # Пошук за входженням опису в світлину
 @router.get("/search", response_model=List[ImageAllResponse])
 async def get_photo_by_description(description: str, db: Session = Depends(get_db)):
@@ -63,6 +49,20 @@ async def get_photo_by_description(description: str, db: Session = Depends(get_d
 async def get_all_photo(db: Session = Depends(get_db)):
     try:
         image = await repository_photo.get_photo_all(db)
+        if not image:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Image not found")
+
+        return image
+
+    except SQLAlchemyError as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+
+
+# Пошук світлини за id
+@router.get("/{image_id}", response_model=ImageURLResponse)
+async def get_photo_url(image_id: int, db: Session = Depends(get_db)):
+    try:
+        image = await repository_photo.get_photo_by_id(image_id, db)
         if not image:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Image not found")
 
