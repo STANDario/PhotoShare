@@ -3,6 +3,7 @@ from typing import List
 from pydantic import BaseModel
 
 from src.schemas.tag_schemas import TagModel
+from src.schemas.comment_schemas import CommentForPhotoSchema
 
 
 class ImageModel(BaseModel):
@@ -16,6 +17,7 @@ class ImageURLResponse(BaseModel):
     url: str
     description: str
     tags: List[TagModel] | None
+    comments: List[CommentForPhotoSchema] | None
 
 
 class ImageAllResponse(BaseModel):
@@ -23,6 +25,7 @@ class ImageAllResponse(BaseModel):
     url: str
     description: str
     tags: List[TagModel] | None
+    comments: List[CommentForPhotoSchema] | None
 
 
 class ImageUpdateResponse(BaseModel):
