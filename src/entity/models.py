@@ -3,6 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
 
+
 Base = declarative_base()
 
 
@@ -41,3 +42,10 @@ class Comment(Base):
     image_id = Column("image_id", ForeignKey("images.id", ondelete="CASCADE"), default=None)
     created_at = Column("created_at", DateTime, default=func.now())
     updated_at = Column("updated_at", DateTime, default=func.now(), onupdate=func.now())
+
+
+class ImageLink(Base):
+    __tablename__ = "image_links"
+    id = Column(Integer, primary_key=True, index=True)
+    image_url = Column(String, index=True)
+    qr_code_url = Column(String, index=True)    
