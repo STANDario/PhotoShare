@@ -2,7 +2,7 @@ from fastapi import FastAPI
 import uvicorn
 import logging
 
-from src.routes import photo, tags_routes, comments_routes
+from src.routes import photo, tags_routes, comments_routes, links_routes
 
 
 app = FastAPI()
@@ -11,6 +11,7 @@ app = FastAPI()
 app.include_router(photo.router, prefix='/api')
 app.include_router(tags_routes.router, prefix='/api')
 app.include_router(comments_routes.router, prefix='/api')
+app.include_router(links_routes.router, prefix='/api')
 
 
 @app.get("/")

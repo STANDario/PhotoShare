@@ -16,6 +16,7 @@ class ImageModel(BaseModel):
 class ImageURLResponse(BaseModel):
     url: str
     description: str
+    qr_url: str | None
     tags: List[TagModel] | None
     comments: List[CommentForPhotoSchema] | None
 
@@ -24,6 +25,7 @@ class ImageAllResponse(BaseModel):
     id: int
     url: str
     description: str
+    qr_url: str | None
     tags: List[TagModel] | None
     comments: List[CommentForPhotoSchema] | None
 

@@ -25,6 +25,7 @@ class Image(Base):
     updated_at = Column("updated_at", DateTime, default=func.now(), onupdate=func.now())
     tags = relationship("Tag", secondary=image_m2m_tag, back_populates="images")
     comments = relationship("Comment", cascade="all,delete", backref="images")
+    qr_url = Column(String(255), nullable=True)
 
 
 class Tag(Base):
