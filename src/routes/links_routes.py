@@ -1,35 +1,19 @@
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.ext.asyncio import AsyncSession
-from src.database import get_db
-from src.entity.models import ImageLink
-from src.repository.image_link import create_image_link
-from src.schemas import ImageLinkCreate
-from src.utils.qrcode import generate_qr_code  
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.orm import Session
+from src.database.db import get_db
+from src.repository.image_link import create_qr
+from src.schemas.link_schemas import ImageTransformModel, ImageLinkQR
 
-router = APIRouter()
 
-@router.post("/image_links/", response_model=ImageLink)
-async def create_image_link(image_link: ImageLinkCreate, db: AsyncSession = Depends(get_db)):
-    db_image_link = await create_image_link(db=db, image_link=image_link)
-    
-   
-    base_url = "https://yourserver.com"  
-    image_url = f"{base_url}/images/{db_image_link.id}"  
-    
+router = APIRouter(prefix="/qr_code", tags=["qr_code"])
 
-    db_image_link.image_url = image_url
-    
-   
-    await db.commit()
-    await db.refresh(db_image_link)
-    
-   
-    qr_code_path = f"qr_codes/{db_image_link.id}.png"  # Шлях до файлу QR-коду
-    generate_qr_code(image_url, qr_code_path)  # Генеруємо QR-код для URL зображення
-    db_image_link.qr_code_url = qr_code_path  # Зберігаємо шлях до QR-коду в базі даних
-    
 
-    await db.commit()
-    await db.refresh(db_image_link)
-    
-    return db_image_link
+@router.post("/image_links/", response_model=ImageLinkQR)
+async def create_image_link(body: ImageTransformModel, db: Session = Depends(get_db)):
+
+    image = await create_qr(body, db)
+
+    if image is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Image not found")
+
+    return image
