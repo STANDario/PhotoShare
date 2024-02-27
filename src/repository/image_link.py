@@ -3,12 +3,12 @@ from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 from src.schemas.link_schemas import ImageTransformModel, ImageLinkQR
 
-from src.entity.models import Image
+from src.entity.models import Image, User
 from src.utils.qrcode import generate_qr_code
 from src.services.cloudinary_service import CloudImage
 
 
-async def create_qr(body: ImageTransformModel, db: Session):
+async def create_qr(body: ImageTransformModel, db: Session, user: User):
     image = db.query(Image).filter(Image.id == body.id).first()
 
     if image is None:
@@ -19,7 +19,7 @@ async def create_qr(body: ImageTransformModel, db: Session):
 
     qr_code_img = generate_qr_code(image.url)
 
-    new_public_id = CloudImage.generate_name_image()
+    new_public_id = CloudImage.generate_name_image(user.email)
 
     upload_file = CloudImage.upload_image(qr_code_img, new_public_id)
 

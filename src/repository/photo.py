@@ -2,15 +2,17 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 from fastapi import status, HTTPException
 
-from src.entity.models import Image, Tag
+from src.entity.models import Image, Tag, User
 from src.services.cloudinary_service import CloudImage
 from src.schemas.photo_schemas import ImageChangeResponse, ImageModel
 from src.schemas.tag_schemas import TagModel, AddTagToPhoto
 from src.routes.tags_routes import create_tag
 
 
-async def add_image(url: str, public_id: str, description: str, db: Session) -> Image | None:
-    image = Image(url=url, public_id=public_id, description=description)
+async def add_image(url: str, public_id: str, description: str, db: Session, user: User) -> Image | None:
+    if not user:
+        return None
+    image = Image(url=url, public_id=public_id, user_id=user.id, description=description)
     db.add(image)
     db.commit()
     db.refresh(image)
@@ -46,14 +48,17 @@ async def delete_photo(image_id: int, db: Session):
     return image
 
 
-async def change_size_photo(image_id: int, width: int, db: Session):
+async def change_size_photo(image_id: int, width: int, db: Session, user: User):
     image = await get_photo_by_id(image_id, db)
 
     if image is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Image not found")
 
+    if image.user_id != user.id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Can`t update someones picture")
+
     url, public_id = CloudImage.change_size(image.public_id, width)
-    new_image = Image(url=url, public_id=public_id, description=image.description)
+    new_image = Image(url=url, public_id=public_id, user_id=user.id, description=image.description)
     db.add(new_image)
     db.commit()
     db.refresh(new_image)
@@ -68,14 +73,17 @@ async def change_size_photo(image_id: int, width: int, db: Session):
     return ImageChangeResponse(image=image_model, detail="Image has been resized and added")
 
 
-async def fade_edge_photo(image_id, db: Session):
+async def fade_edge_photo(image_id, db: Session, user: User):
     image = await get_photo_by_id(image_id, db)
 
     if image is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Image not found")
+
+    if image.user_id != user.id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Can`t update someones picture")
 
     url, public_id = CloudImage.fade_edge(image.public_id)
-    new_image = Image(url=url, public_id=public_id, description=image.description)
+    new_image = Image(url=url, public_id=public_id, user_id=user.id, description=image.description)
     db.add(new_image)
     db.commit()
     db.refresh(new_image)
@@ -90,14 +98,17 @@ async def fade_edge_photo(image_id, db: Session):
     return ImageChangeResponse(image=image_model, detail="Image with fade effect has been added")
 
 
-async def black_white_photo(image_id, db: Session):
+async def black_white_photo(image_id, db: Session, user: User):
     image = await get_photo_by_id(image_id, db)
 
     if image is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Image not found")
+
+    if image.user_id != user.id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Can`t update someones picture")
 
     url, public_id = CloudImage.black_white(image.public_id)
-    new_image = Image(url=url, public_id=public_id, description=image.description)
+    new_image = Image(url=url, public_id=public_id, user_id=user.id, description=image.description)
     db.add(new_image)
     db.commit()
     db.refresh(new_image)
@@ -112,11 +123,14 @@ async def black_white_photo(image_id, db: Session):
     return ImageChangeResponse(image=image_model, detail="Image with fade effect has been added")
 
 
-async def add_tag(image_id: int, tag_name: str, db: Session):
+async def add_tag(image_id: int, tag_name: str, db: Session, user: User):
     image = await get_photo_by_id(image_id, db)
 
     if image is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Image not found")
+
+    if image.user_id != user.id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Can`t update someones picture")
 
     if len(image.tags) >= 5:
         raise HTTPException(

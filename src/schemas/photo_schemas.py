@@ -11,6 +11,7 @@ class ImageModel(BaseModel):
     url: str
     description: str
     public_id: str
+    user_id: int
 
 
 class ImageURLResponse(BaseModel):

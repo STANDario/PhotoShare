@@ -9,6 +9,7 @@ class CommentSchema(BaseModel):
 
 class CommentsResponse(BaseModel):
     id: int
+    user_id: int
     image_id: int
     comment: str
     created_at: datetime.datetime
@@ -19,6 +20,7 @@ class CommentsResponse(BaseModel):
 
 
 class CommentForPhotoSchema(BaseModel):
+    user_id: int
     comment: str
 
 
