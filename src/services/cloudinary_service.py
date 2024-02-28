@@ -17,8 +17,8 @@ class CloudImage:
     )
 
     @staticmethod
-    def generate_name_image() -> str:
-        name = hashlib.sha256("email".encode("utf-8")).hexdigest()[:12]
+    def generate_name_image(email: str) -> str:
+        name = hashlib.sha256(email.encode("utf-8")).hexdigest()[:12]
         time = datetime.now()
         return f"photo_share/{name}{time}"
 
