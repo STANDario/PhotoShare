@@ -17,6 +17,11 @@ cloudinary = "^1.38.0"
 pydantic = {extras = ["email"], version = "^2.6.1"}
 qrcode = "^7.4.2"
 pydantic-settings = "^2.2.1"
+libgravatar = "^1.0.4"
+fastapi-limiter = "^0.1.6"
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+fastapi-mail = "^1.4.1"
 
 
 [build-system]
