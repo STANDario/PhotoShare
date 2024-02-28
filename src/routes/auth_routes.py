@@ -17,7 +17,18 @@ get_refresh_token = HTTPBearer()
 
 @router.post("/signup", response_model=UserResponse, status_code=status.HTTP_201_CREATED, name="Create new user")
 async def signup(body: UserSchema, bt: BackgroundTasks, request: Request, db: Session = Depends(get_db)):
+    """
+    Endpoint to sign up a new user.
 
+    Args:
+        body (UserSchema): User data.
+        bt (BackgroundTasks): Background tasks.
+        request (Request): Request object.
+        db (Session, optional): Database session. Defaults to Depends(get_db).
+
+    Returns:
+        UserResponse: Created user.
+    """
     num_users = await repository_users.get_total_users_count(db)
     if num_users == 0:
         body.role = Role.admin
@@ -40,7 +51,16 @@ async def signup(body: UserSchema, bt: BackgroundTasks, request: Request, db: Se
 
 @router.post("/login", response_model=TokenSchema, status_code=status.HTTP_202_ACCEPTED, name="Login")
 async def login(body: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+    """
+    Endpoint to log in a user.
 
+    Args:
+        body (OAuth2PasswordRequestForm, optional): Login form data. Defaults to Depends().
+        db (Session, optional): Database session. Defaults to Depends(get_db).
+
+    Returns:
+        TokenSchema: Access and refresh tokens.
+    """
     user = await repository_users.get_user_by_email(body.username, db)
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid email")
@@ -60,7 +80,16 @@ async def login(body: OAuth2PasswordRequestForm = Depends(), db: Session = Depen
 @router.get('/refresh_token', response_model=TokenSchema, status_code=status.HTTP_202_ACCEPTED, name="Update token")
 async def refresh_token(credentials: HTTPAuthorizationCredentials = Security(get_refresh_token),
                         db: Session = Depends(get_db)):
+    """
+    Endpoint to refresh an access token.
 
+    Args:
+        credentials (HTTPAuthorizationCredentials, optional): Token credentials. Defaults to Security(get_refresh_token).
+        db (Session, optional): Database session. Defaults to Depends(get_db).
+
+    Returns:
+        TokenSchema: New access and refresh tokens.
+    """
     token = credentials.credentials
     email = await auth_service.decode_refresh_token(token)
     user = await repository_users.get_user_by_email(email, db)
@@ -78,7 +107,16 @@ async def refresh_token(credentials: HTTPAuthorizationCredentials = Security(get
 
 @router.get('/confirmed_email/{token}', name="Email confirmation with token")
 async def confirmed_email(token: str, db: Session = Depends(get_db)):
+    """
+    Endpoint to confirm user email using a token.
 
+    Args:
+        token (str): Confirmation token.
+        db (Session, optional): Database session. Defaults to Depends(get_db).
+
+    Returns:
+        dict: Confirmation message.
+    """
     email = await auth_service.get_email_from_token(token)
     user = await repository_users.get_user_by_email(email, db)
     if user is None:
@@ -92,7 +130,18 @@ async def confirmed_email(token: str, db: Session = Depends(get_db)):
 @router.post('/request_email', name="Request email confirmation")
 async def request_email(body: RequestEmail, background_tasks: BackgroundTasks, request: Request,
                         db: Session = Depends(get_db)):
+    """
+    Endpoint to request email confirmation.
 
+    Args:
+        body (RequestEmail): Email request data.
+        background_tasks (BackgroundTasks): Background tasks.
+        request (Request): Request object.
+        db (Session, optional): Database session. Defaults to Depends(get_db).
+
+    Returns:
+        dict: Confirmation message.
+    """
     user = await repository_users.get_user_by_email(body.email, db)
 
     if user.confirmed:

@@ -1,4 +1,4 @@
-from typing import List, Type
+from typing import Sequence
 
 from sqlalchemy.future import select
 from sqlalchemy.orm import Session
@@ -11,14 +11,12 @@ async def tag_create(body: TagModel, db: Session) -> Tag:
     """
     Create a new tag.
 
-    This function creates a new tag based on the provided tag model.
+    Args:
+        body (TagModel): Tag data.
+        db (Session): Database session.
 
-    :param body: Tag model containing tag information.
-    :type body: TagModel
-    :param db: Database session.
-    :type db: AsyncSession
-    :return: Created tag.
-    :rtype: Tag
+    Returns:
+        Tag: Created tag.
     """
     tag = Tag(tag_name=body.tag_name.lower())
     db.add(tag)
@@ -29,16 +27,14 @@ async def tag_create(body: TagModel, db: Session) -> Tag:
 
 async def get_tag_by_id(tag_id: int, db: Session) -> Tag | None:
     """
-    Get a tag by its ID.
+    Retrieve a tag by its ID.
 
-    This function retrieves a tag based on its ID.
+    Args:
+        tag_id (int): Tag ID.
+        db (Session): Database session.
 
-    :param tag_id: ID of the tag.
-    :type tag_id: int
-    :param db: Database session.
-    :type db: AsyncSession
-    :return: Tag if found, None otherwise.
-    :rtype: Tag | None
+    Returns:
+        Tag | None: Retrieved tag.
     """
     result = db.execute(select(Tag).filter(Tag.id == tag_id))
     tag = result.scalar()
@@ -47,32 +43,29 @@ async def get_tag_by_id(tag_id: int, db: Session) -> Tag | None:
 
 async def get_tag_by_name(tag_name: str, db: Session) -> Tag | None:
     """
-    Get a tag by its name.
+    Retrieve a tag by its name.
 
-    This function retrieves a tag based on its name.
+    Args:
+        tag_name (str): Tag name.
+        db (Session): Database session.
 
-    :param tag_name: Name of the tag.
-    :type tag_name: str
-    :param db: Database session.
-    :type db: AsyncSession
-    :return: Tag if found, None otherwise.
-    :rtype: Tag | None
+    Returns:
+        Tag | None: Retrieved tag.
     """
     result = db.execute(select(Tag).filter(Tag.tag_name == tag_name))
     tag = result.scalar()
     return tag
 
 
-async def get_tags(db: Session) -> List[Type[Tag]]:
+async def get_tags(db: Session) -> Sequence[Tag]:
     """
-    Get all tags.
+    Retrieve all tags.
 
-    This function retrieves all tags present in the database.
+    Args:
+        db (Session): Database session.
 
-    :param db: Database session.
-    :type db: AsyncSession
-    :return: List of tags.
-    :rtype: List[Type[Tag]]
+    Returns:
+        Sequence[Tag]: Sequence of tags.
     """
     result = db.execute(select(Tag))
     tags = result.scalars().all()
@@ -81,18 +74,15 @@ async def get_tags(db: Session) -> List[Type[Tag]]:
 
 async def update_tag(tag_id: int, body: TagModel, db: Session) -> Tag | None:
     """
-    Update a tag.
+    Update a tag by its ID.
 
-    This function updates the tag with the specified tag_id.
+    Args:
+        tag_id (int): Tag ID.
+        body (TagModel): New tag data.
+        db (Session): Database session.
 
-    :param tag_id: ID of the tag to be updated.
-    :type tag_id: int
-    :param body: TagModel containing the new tag information.
-    :type body: TagModel
-    :param db: Database session.
-    :type db: AsyncSession
-    :return: Updated tag.
-    :rtype: Tag | None
+    Returns:
+        Tag | None: Updated tag.
     """
     result = db.execute(select(Tag).filter(Tag.id == tag_id))
     tag = result.scalar()
@@ -105,16 +95,14 @@ async def update_tag(tag_id: int, body: TagModel, db: Session) -> Tag | None:
 
 async def remove_tag_by_name(tag_name: str, db: Session) -> Tag | None:
     """
-    Remove a tag by name.
+    Remove a tag by its name.
 
-    This function removes the tag with the specified tag_name.
+    Args:
+        tag_name (str): Tag name.
+        db (Session): Database session.
 
-    :param tag_name: Name of the tag to be removed.
-    :type tag_name: str
-    :param db: Database session.
-    :type db: AsyncSession
-    :return: Removed tag.
-    :rtype: Tag | None
+    Returns:
+        Tag | None: Removed tag.
     """
     result = db.execute(select(Tag).filter(Tag.tag_name == tag_name))
     tag = result.scalar()

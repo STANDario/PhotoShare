@@ -9,6 +9,21 @@ from src.services.cloudinary_service import CloudImage
 
 
 async def create_qr(body: ImageTransformModel, db: Session, user: User):
+    """
+    Generate a QR code for an image and associate it with the image.
+
+    Args:
+        body (ImageTransformModel): Data model containing information about the image.
+        db (Session): Database session.
+        user (User): Currently authenticated user.
+
+    Raises:
+        HTTPException: If the image is not found in the database.
+
+    Returns:
+        ImageLinkQR: Information about the generated QR code and its associated image.
+    """
+    
     image = db.query(Image).filter(Image.id == body.id).first()
 
     if image is None:
