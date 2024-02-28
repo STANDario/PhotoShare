@@ -90,7 +90,6 @@ async def refresh_token(credentials: HTTPAuthorizationCredentials = Security(get
     Returns:
         TokenSchema: New access and refresh tokens.
     """
-
     token = credentials.credentials
     email = await auth_service.decode_refresh_token(token)
     user = await repository_users.get_user_by_email(email, db)

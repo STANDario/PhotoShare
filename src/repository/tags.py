@@ -1,4 +1,4 @@
-from typing import List, Type
+from typing import Sequence
 
 from sqlalchemy.future import select
 from sqlalchemy.orm import Session
@@ -57,7 +57,7 @@ async def get_tag_by_name(tag_name: str, db: Session) -> Tag | None:
     return tag
 
 
-async def get_tags(db: Session) -> List[Type[Tag]]:
+async def get_tags(db: Session) -> Sequence[Tag]:
     """
     Retrieve all tags.
 
@@ -65,7 +65,7 @@ async def get_tags(db: Session) -> List[Type[Tag]]:
         db (Session): Database session.
 
     Returns:
-        List[Type[Tag]]: List of tags.
+        Sequence[Tag]: Sequence of tags.
     """
     result = db.execute(select(Tag))
     tags = result.scalars().all()

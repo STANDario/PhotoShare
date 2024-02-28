@@ -127,7 +127,6 @@ async def change_size_photo(image_id: int, width: int, db: Session, user: User):
     Returns:
         ImageChangeResponse: Response containing information about the resized image.
     """
-
     image = await get_photo_by_id(image_id, db)
 
     if image is None:

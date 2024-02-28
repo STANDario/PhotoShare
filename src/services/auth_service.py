@@ -70,19 +70,18 @@ class Auth:
         return encoded_refresh_token
 
     async def decode_refresh_token(self, refresh_token: str):
-        
         """
-    Decode a refresh token to extract the email address.
+        Decode a refresh token to extract the email address.
 
-    Args:
-        refresh_token (str): Encoded refresh token.
+        Args:
+            refresh_token (str): Encoded refresh token.
 
-    Returns:
-        str: Email address associated with the token.
+        Returns:
+            str: Email address associated with the token.
 
-    Raises:
-        HTTPException: If the token is invalid or the scope is incorrect.
-    """
+        Raises:
+            HTTPException: If the token is invalid or the scope is incorrect.
+        """
         try:
             payload = jwt.decode(refresh_token, self.SECRET_KEY, algorithms=[self.ALGORITHM])
             if payload['scope'] == 'refresh_token':
@@ -94,18 +93,18 @@ class Auth:
 
     async def get_current_user(self, token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
         """
-    Retrieve the current user based on the provided token.
+        Retrieve the current user based on the provided token.
 
-    Args:
-        token (str): JWT token passed in the Authorization header.
-        db (Session): Database session.
+        Args:
+            token (str): JWT token passed in the Authorization header.
+            db (Session): Database session.
 
-    Returns:
-        User: Current user object.
+        Returns:
+            User: Current user object.
 
-    Raises:
-        HTTPException: If the token is invalid or the user cannot be found.
-    """
+        Raises:
+            HTTPException: If the token is invalid or the user cannot be found.
+        """
         credentials_exception = HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Could not validate credentials",
@@ -139,14 +138,14 @@ class Auth:
 
     def create_email_token(self, data: dict):
         """
-    Create an email verification token.
+        Create an email verification token.
 
-    Args:
-        data (dict): Data to be encoded into the token.
+        Args:
+            data (dict): Data to be encoded into the token.
 
-    Returns:
-        str: Generated JWT token for email verification.
-    """
+        Returns:
+            str: Generated JWT token for email verification.
+        """
         to_encode = data.copy()
         expire = datetime.utcnow() + timedelta(days=1)
         to_encode.update({"iat": datetime.utcnow(), "exp": expire})
@@ -155,17 +154,17 @@ class Auth:
 
     async def get_email_from_token(self, token: str):
         """
-    Retrieve the email address from the email verification token.
+        Retrieve the email address from the email verification token.
 
-    Args:
-        token (str): JWT token for email verification.
+        Args:
+            token (str): JWT token for email verification.
 
-    Returns:
-        str: Email address extracted from the token.
+        Returns:
+            str: Email address extracted from the token.
 
-    Raises:
-        HTTPException: If the token is invalid.
-    """
+        Raises:
+            HTTPException: If the token is invalid.
+        """
         try:
             payload = jwt.decode(token, self.SECRET_KEY, algorithms=[self.ALGORITHM])
             email = payload["sub"]

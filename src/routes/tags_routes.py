@@ -1,4 +1,4 @@
-from typing import List, Type
+from typing import List, Sequence
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
@@ -29,7 +29,7 @@ async def create_tag(body: TagModel, db: Session = Depends(get_db),
         HTTPException: If the tag already exists or there is a bad request.
 
     Returns:
-        TagResponse: Details of the created tag.
+        Tag: Details of the created tag.
     """
     tag_exist = await repo_tags.get_tag_by_name(body.tag_name.lower(), db)
     if tag_exist:
@@ -55,7 +55,7 @@ async def get_tag_by_id(tag_id: int, db: Session = Depends(get_db),
         HTTPException: If the tag is not found.
 
     Returns:
-        TagResponse: Details of the retrieved tag.
+        Tag: Details of the retrieved tag.
     """
     tag = await repo_tags.get_tag_by_id(tag_id, db)
     if tag is None:
@@ -78,7 +78,7 @@ async def get_tag_by_name(tag_name: str, db: Session = Depends(get_db),
         HTTPException: If the tag is not found.
 
     Returns:
-        TagResponse: Details of the retrieved tag.
+        Tag: Details of the retrieved tag.
     """
     tag = await repo_tags.get_tag_by_name(tag_name, db)
     if tag is None:
@@ -88,7 +88,7 @@ async def get_tag_by_name(tag_name: str, db: Session = Depends(get_db),
 
 @router.get("/", response_model=List[TagResponse])
 async def get_all_tags(db: Session = Depends(get_db),
-                       current_user: User = Depends(get_current_user)) -> list[Type[Tag]] | None:
+                       current_user: User = Depends(get_current_user)) -> Sequence[Tag] | None:
     """
     Get all tags.
 
@@ -97,7 +97,7 @@ async def get_all_tags(db: Session = Depends(get_db),
         current_user (User, optional): Current user. Defaults to Depends(get_current_user).
 
     Returns:
-        List[TagResponse]: List of all tags.
+        Sequence[Tag]: Sequence of all tags.
     """
     tags = await repo_tags.get_tags(db)
     return tags
@@ -119,7 +119,7 @@ async def update_tag(tag_id: int, body: TagModel, db: Session = Depends(get_db),
         HTTPException: If the tag is not found.
 
     Returns:
-        TagResponse: Details of the updated tag.
+        Tag: Details of the updated tag.
     """
     tag = await repo_tags.update_tag(tag_id, body, db)
     if tag is None:
@@ -142,7 +142,7 @@ async def delete_tag(identifier: str, db: Session = Depends(get_db),
         HTTPException: If the tag is not found.
 
     Returns:
-        TagResponse: Details of the deleted tag.
+        Tag: Details of the deleted tag.
     """
     tag = await repo_tags.remove_tag_by_name(identifier, db)
 
