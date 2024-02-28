@@ -16,6 +16,18 @@ router = APIRouter(prefix="/comments", tags=["comments"])
 @router.post("/", response_model=CommentsResponse, status_code=status.HTTP_201_CREATED)
 async def create_comments(comment_data: CommentSchema, image_id: int, db: Session = Depends(get_db),
                           current_user: User = Depends(get_current_user)):
+    """
+    Create a new comment.
+
+    Args:
+        comment_data (CommentSchema): Comment data.
+        image_id (int): Image ID.
+        db (Session, optional): Database session. Defaults to Depends(get_db).
+        current_user (User, optional): Current user. Defaults to Depends(get_current_user).
+
+    Returns:
+        CommentsResponse: Created comment.
+    """
     try:
         created_comment = await create_comment(image_id, comment_data.comment, db, current_user)
         return created_comment
@@ -27,6 +39,18 @@ async def create_comments(comment_data: CommentSchema, image_id: int, db: Sessio
 @router.put("/{comment_id}/update", response_model=CommentsResponse, status_code=status.HTTP_201_CREATED)
 async def update_comments(comment_id: int, comment: CommentSchema, db: Session = Depends(get_db),
                           current_user: User = Depends(get_current_user)):
+    """
+    Update a comment.
+
+    Args:
+        comment_id (int): Comment ID.
+        comment (CommentSchema): Comment data.
+        db (Session, optional): Database session. Defaults to Depends(get_db).
+        current_user (User, optional): Current user. Defaults to Depends(get_current_user).
+
+    Returns:
+        CommentsResponse: Updated comment.
+    """
     updated_comment = await update_comment(comment_id, comment.comment, db, current_user)
 
     if updated_comment.user_id != current_user.id:
@@ -43,6 +67,17 @@ async def update_comments(comment_id: int, comment: CommentSchema, db: Session =
                dependencies=[Depends(admin_and_moder)])
 async def delete_comments(comment_id: int, db: Session = Depends(get_db),
                           current_user: User = Depends(get_current_user)):
+    """
+    Delete a comment.
+
+    Args:
+        comment_id (int): Comment ID.
+        db (Session, optional): Database session. Defaults to Depends(get_db).
+        current_user (User, optional): Current user. Defaults to Depends(get_current_user).
+
+    Returns:
+        DeleteComment: Deleted comment.
+    """
     deleted_comment = await delete_comment(comment_id, db, current_user)
     if deleted_comment:
         return deleted_comment
