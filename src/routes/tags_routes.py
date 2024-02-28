@@ -8,6 +8,7 @@ from src.entity.models import Tag, User
 from src.repository import tags as repo_tags
 from src.schemas.tag_schemas import TagModel, TagResponse
 from src.services.auth_service import get_current_user
+from src.services.role_service import admin_and_moder
 
 
 router = APIRouter(prefix="/tags", tags=["tags"])
@@ -64,7 +65,7 @@ async def update_tag(tag_id: int, body: TagModel, db: Session = Depends(get_db),
     return tag
 
 
-@router.delete("/", response_model=TagResponse)
+@router.delete("/", response_model=TagResponse, dependencies=[Depends(admin_and_moder)])
 async def delete_tag(identifier: str, db: Session = Depends(get_db),
                      current_user: User = Depends(get_current_user)) -> Tag | None:
 

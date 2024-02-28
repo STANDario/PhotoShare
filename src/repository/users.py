@@ -1,14 +1,12 @@
-from fastapi import Depends
 from sqlalchemy import select, func
 from sqlalchemy.orm import Session
-from src.schemas.user_schemas import UserSchema
 from libgravatar import Gravatar
 
-from src.database.db import get_db
 from src.entity.models import User
+from src.schemas.user_schemas import UserSchema
 
 
-async def get_user_by_email(email: str, db: Session = Depends(get_db)):
+async def get_user_by_email(email: str, db: Session):
 
     stmt = select(User).filter_by(email=email)
     user = db.execute(stmt)
@@ -16,7 +14,14 @@ async def get_user_by_email(email: str, db: Session = Depends(get_db)):
     return user
 
 
-async def create_user(body: UserSchema, db: Session = Depends(get_db)):
+async def get_user_by_username(username: str, db: Session):
+    stmt = select(User).filter_by(username=username)
+    user = db.execute(stmt)
+    user = user.scalar_one_or_none()
+    return user
+
+
+async def create_user(body: UserSchema, db: Session):
 
     avatar = None
     try:

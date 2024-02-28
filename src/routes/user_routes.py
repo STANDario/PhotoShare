@@ -29,9 +29,9 @@ async def get_current_user(user: User = Depends(auth_service.get_current_user)):
 @router.patch("/avatar", response_model=UserResponse,
               description='No more than 3 requests per minute',
               dependencies=[Depends(RateLimiter(times=1, seconds=20))])
-async def get_current_user(file: UploadFile = File(),
-                           user: User = Depends(auth_service.get_current_user),
-                           db: Session = Depends(get_db)):
+async def update_user_avatar(file: UploadFile = File(),
+                             user: User = Depends(auth_service.get_current_user),
+                             db: Session = Depends(get_db)):
 
     public_id = f"Contacts_Hw_web/{user.email}"
     res = cloudinary.uploader.upload(file.file, public_id=public_id, overwrite=True)

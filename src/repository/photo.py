@@ -27,8 +27,8 @@ async def get_photo_by_desc(description: str, db: Session):
     return db.query(Image).filter(Image.description.contains(description.lower())).all()
 
 
-async def get_photo_all(db):
-    return db.query(Image).filter().all()
+async def get_photo_all(skip: int, limit: int, db: Session):
+    return db.query(Image).offset(skip).limit(limit).all()
 
 
 async def update_photo(image_id: int, description: str, db: Session):
@@ -67,7 +67,8 @@ async def change_size_photo(image_id: int, width: int, db: Session, user: User):
         id=new_image.id,
         url=new_image.url,
         description=new_image.description,
-        public_id=new_image.public_id
+        public_id=new_image.public_id,
+        user_id=user.id
     )
 
     return ImageChangeResponse(image=image_model, detail="Image has been resized and added")
@@ -92,7 +93,8 @@ async def fade_edge_photo(image_id, db: Session, user: User):
         id=new_image.id,
         url=new_image.url,
         description=new_image.description,
-        public_id=new_image.public_id
+        public_id=new_image.public_id,
+        user_id=user.id
     )
 
     return ImageChangeResponse(image=image_model, detail="Image with fade effect has been added")
@@ -117,7 +119,8 @@ async def black_white_photo(image_id, db: Session, user: User):
         id=new_image.id,
         url=new_image.url,
         description=new_image.description,
-        public_id=new_image.public_id
+        public_id=new_image.public_id,
+        user_id=user.id
     )
 
     return ImageChangeResponse(image=image_model, detail="Image with fade effect has been added")

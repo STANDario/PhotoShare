@@ -1,10 +1,10 @@
 from typing import List
 
-from fastapi import APIRouter, Depends, status, UploadFile, File, HTTPException
+from fastapi import APIRouter, Depends, status, UploadFile, File, HTTPException, Query
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
-from src.entity.models import User
+from src.entity.models import User, Role
 from src.schemas.photo_schemas import (
     ImageModel,
     ImageURLResponse,
@@ -45,9 +45,6 @@ async def get_photo_by_description(description: str, db: Session = Depends(get_d
         if not image:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Image not found")
 
-        if current_user.role != "admin" and image.user_id != current_user.id:
-            raise HTTPException(status_code=403, detail="Not authorized access")
-
         return image
 
     except SQLAlchemyError as e:
@@ -56,15 +53,13 @@ async def get_photo_by_description(description: str, db: Session = Depends(get_d
 
 # Повертаємо усі світлини
 @router.get("/get_all", response_model=List[ImageAllResponse], dependencies=[Depends(all_roles)])
-async def get_all_photo(db: Session = Depends(get_db),
+async def get_all_photo(skip: int = 0, limit: int = Query(default=10, le=100, ge=10),
+                        db: Session = Depends(get_db),
                         current_user: User = Depends(get_current_user)):
     try:
-        image = await repository_photo.get_photo_all(db)
+        image = await repository_photo.get_photo_all(skip, limit, db)
         if not image:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Image not found")
-
-        if current_user.role != "admin" and image.user_id != current_user.id:
-            raise HTTPException(status_code=403, detail="Not authorized access")
 
         return image
 
@@ -81,9 +76,6 @@ async def get_photo_url(image_id: int, db: Session = Depends(get_db),
         if not image:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Image not found")
 
-        if current_user.role != "admin" and image.user_id != current_user.id:
-            raise HTTPException(status_code=403, detail="Not authorized access")
-
         return image
 
     except SQLAlchemyError as e:
@@ -98,7 +90,7 @@ async def update_photo(image_id: int, description: str, db: Session = Depends(ge
         if not image:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Image not found")
 
-        if image.user_id != current_user.id:
+        if image.user_id != current_user.id and current_user.role != Role.admin:
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Can`t update someones picture")
 
         updated_image = await repository_photo.update_photo(image_id, description, db)
@@ -117,9 +109,11 @@ async def delete_model(image_id, db: Session = Depends(get_db),
         if not image:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Image not found")
 
-        if current_user.role == "admin" or image.user_id == current_user.id:
-            deleted_image = await repository_photo.delete_photo(image_id, db)
-            return deleted_image
+        if image.user_id != current_user.id and current_user.role != Role.admin:
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Can`t delete someones picture")
+
+        deleted_image = await repository_photo.delete_photo(image_id, db)
+        return deleted_image
 
     except SQLAlchemyError as e:
         db.rollback()
@@ -158,6 +152,10 @@ async def add_tag(image_id: int, tag: str, db: Session = Depends(get_db),
                   current_user: User = Depends(get_current_user)):
     try:
         image = await repository_photo.add_tag(image_id, tag, db, current_user)
+
+        if image.user_id != current_user.id and current_user.role != Role.admin:
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Can`t delete someones picture")
+
         return image
 
     except SQLAlchemyError as e:

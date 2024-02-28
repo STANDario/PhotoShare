@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     algorithm: str
     redis_domain: str
     redis_port: str
-    redis_password: str
+    redis_password:  str | None = None
     mail_username: str
     mail_password:  str
     mail_from: str

@@ -18,15 +18,14 @@ class Auth:
     pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
     SECRET_KEY = settings.secret_key_jwt
     ALGORITHM = settings.algorithm
-    cache = redis.Redis(host=settings.redis_domain, port=settings.redis_port, db=0, password=settings.redis_password)
+    oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
+    cache = redis.Redis(host=settings.redis_domain, port=settings.redis_port, db=0)
 
     def verify_password(self, plain_password, hashed_password):
         return self.pwd_context.verify(plain_password, hashed_password)
 
     def get_password_hash(self, password: str):
         return self.pwd_context.hash(password)
-
-    oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/auth/login")
 
     # define a function to generate a new access token
     async def create_access_token(self, data: dict, expires_delta: Optional[float] = None):
@@ -86,8 +85,8 @@ class Auth:
             user = await repository_users.get_user_by_email(email, db)
             if user is None:
                 raise credentials_exception
-            await self.cache.set(user_hash, pickle.dumps(user))
-            await self.cache.expire(user_hash, 300)
+            self.cache.set(user_hash, pickle.dumps(user))
+            self.cache.expire(user_hash, 300)
         else:
             user = pickle.loads(user)
         return user

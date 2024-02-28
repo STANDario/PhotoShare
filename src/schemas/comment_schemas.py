@@ -20,6 +20,7 @@ class CommentsResponse(BaseModel):
 
 
 class CommentForPhotoSchema(BaseModel):
+    id: int
     user_id: int
     comment: str
 

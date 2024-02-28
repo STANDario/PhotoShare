@@ -6,6 +6,7 @@ from src.repository.comments import create_comment, update_comment, delete_comme
 from src.schemas.comment_schemas import CommentSchema, CommentsResponse, DeleteComment
 from src.database.db import get_db
 from src.services.auth_service import get_current_user
+from src.services.role_service import admin_and_moder
 
 
 router = APIRouter(prefix="/comments", tags=["comments"])
@@ -27,6 +28,10 @@ async def create_comments(comment_data: CommentSchema, image_id: int, db: Sessio
 async def update_comments(comment_id: int, comment: CommentSchema, db: Session = Depends(get_db),
                           current_user: User = Depends(get_current_user)):
     updated_comment = await update_comment(comment_id, comment.comment, db, current_user)
+
+    if updated_comment.user_id != current_user.id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Can`t update someones comment")
+
     if updated_comment:
         return updated_comment
     else:
@@ -34,7 +39,8 @@ async def update_comments(comment_id: int, comment: CommentSchema, db: Session =
 
 
 # Видаляємо коментарі
-@router.delete("/{comment_id}", response_model=DeleteComment, status_code=status.HTTP_201_CREATED)
+@router.delete("/{comment_id}", response_model=DeleteComment, status_code=status.HTTP_201_CREATED,
+               dependencies=[Depends(admin_and_moder)])
 async def delete_comments(comment_id: int, db: Session = Depends(get_db),
                           current_user: User = Depends(get_current_user)):
     deleted_comment = await delete_comment(comment_id, db, current_user)

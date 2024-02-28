@@ -15,6 +15,7 @@ class ImageModel(BaseModel):
 
 
 class ImageURLResponse(BaseModel):
+    user_id: int
     url: str
     description: str
     qr_url: str | None
@@ -24,6 +25,7 @@ class ImageURLResponse(BaseModel):
 
 class ImageAllResponse(BaseModel):
     id: int
+    user_id: int
     url: str
     description: str
     qr_url: str | None

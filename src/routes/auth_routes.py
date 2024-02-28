@@ -27,8 +27,9 @@ async def signup(body: UserSchema, bt: BackgroundTasks, request: Request, db: Se
         body.role = Role.user
 
     exist_user = await repository_users.get_user_by_email(body.email, db)
+    exist_username = await repository_users.get_user_by_username(body.username, db)
 
-    if exist_user:
+    if exist_user or exist_username:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Account is already exist")
     body.password = auth_service.get_password_hash(body.password)
     new_user = await repository_users.create_user(body, db)
