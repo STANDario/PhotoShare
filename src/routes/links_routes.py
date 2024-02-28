@@ -15,6 +15,20 @@ router = APIRouter(prefix="/qr_code", tags=["qr_code"])
 async def create_image_link(body: ImageTransformModel, db: Session = Depends(get_db),
                             current_user: User = Depends(get_current_user)):
 
+    """
+    Generate a QR code image link.
+
+    Args:
+        body (ImageTransformModel): Image transformation data.
+        db (Session, optional): Database session. Defaults to Depends(get_db).
+        current_user (User, optional): Current user. Defaults to Depends(get_current_user).
+
+    Raises:
+        HTTPException: If the image is not found.
+
+    Returns:
+        ImageLinkQR: QR code image link.
+    """
     image = await create_qr(body, db, current_user)
 
     if image is None:
