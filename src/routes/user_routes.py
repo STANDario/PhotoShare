@@ -22,7 +22,15 @@ cloudinary.config(cloud_name=settings.cloud_name, api_key=settings.api_key, api_
             description='No more than 3 requests per minute',
             dependencies=[Depends(RateLimiter(times=1, seconds=20))])
 async def get_current_user(user: User = Depends(auth_service.get_current_user)):
+    """
+    Retrieve the current user.
 
+    Args:
+        user (User): Current user retrieved from authentication service.
+
+    Returns:
+        UserResponse: Details of the current user.
+    """
     return user
 
 
@@ -32,7 +40,17 @@ async def get_current_user(user: User = Depends(auth_service.get_current_user)):
 async def update_user_avatar(file: UploadFile = File(),
                              user: User = Depends(auth_service.get_current_user),
                              db: Session = Depends(get_db)):
+    """
+    Update the user's avatar.
 
+    Args:
+        file (UploadFile): File containing the new avatar image.
+        user (User): Current user retrieved from authentication service.
+        db (Session): Database session.
+
+    Returns:
+        UserResponse: Details of the updated user.
+    """
     public_id = f"Contacts_Hw_web/{user.email}"
     res = cloudinary.uploader.upload(file.file, public_id=public_id, overwrite=True)
     res_url = cloudinary.CloudinaryImage(public_id).build_url(width=250, height=250, crop="fill",

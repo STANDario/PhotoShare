@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Welcome to PhotoShare’s documentation! &#8212; PhotoShare  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css?v=601dbdee" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">PhotoShare  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Welcome to PhotoShare’s documentation!</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="welcome-to-photoshare-s-documentation">
+<h1>Welcome to PhotoShare’s documentation!<a class="headerlink" href="#welcome-to-photoshare-s-documentation" title="Link to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="rest-api-main">
+<h1>REST API main<a class="headerlink" href="#rest-api-main" title="Link to this heading">¶</a></h1>
+</section>
+<section id="rest-api-repository-comments">
+<h1>REST API repository comments<a class="headerlink" href="#rest-api-repository-comments" title="Link to this heading">¶</a></h1>
+<dl class="py function" id="module-src.repository.comments">
+<dt class="sig sig-object py" id="src.repository.comments.create_comment">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.repository.comments.</span></span><span class="sig-name descname"><span class="pre">create_comment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comment_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">User</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.repository.comments.create_comment" title="Link to this definition">¶</a></dt>
+<dd><p>Create a new comment associated with an image.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>image_id (int): The ID of the image the comment is associated with.
+comment_data (str): The content of the comment.
+db (Session): Database session.
+user (User): User who is creating the comment.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Comment: The newly created comment.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.repository.comments.delete_comment">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.repository.comments.</span></span><span class="sig-name descname"><span class="pre">delete_comment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">comment_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">User</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.repository.comments.delete_comment" title="Link to this definition">¶</a></dt>
+<dd><p>Delete a comment.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>comment_id (int): The ID of the comment to be deleted.
+db (Session): Database session.
+user (User): User who is deleting the comment.</p>
+</dd>
+<dt>Returns:</dt><dd><p>DeleteComment | None: Information about the deleted comment if successful, None otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.repository.comments.update_comment">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.repository.comments.</span></span><span class="sig-name descname"><span class="pre">update_comment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">comment_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">some_comment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">User</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.repository.comments.update_comment" title="Link to this definition">¶</a></dt>
+<dd><p>Update an existing comment.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>comment_id (int): The ID of the comment to be updated.
+some_comment (str): The updated content of the comment.
+db (Session): Database session.
+user (User): User who is updating the comment.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Comment | None: The updated comment if successful, None otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="rest-api-repository-image-link">
+<h1>REST API repository image_link<a class="headerlink" href="#rest-api-repository-image-link" title="Link to this heading">¶</a></h1>
+</section>
+<section id="rest-api-repository-photo">
+<h1>REST API repository photo<a class="headerlink" href="#rest-api-repository-photo" title="Link to this heading">¶</a></h1>
+</section>
+<section id="module-src.repository.tags">
+<span id="rest-api-repository-tags"></span><h1>REST API repository tags<a class="headerlink" href="#module-src.repository.tags" title="Link to this heading">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="src.repository.tags.get_tag_by_id">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.repository.tags.</span></span><span class="sig-name descname"><span class="pre">get_tag_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tag_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tag</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#src.repository.tags.get_tag_by_id" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieve a tag by its ID.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>tag_id (int): Tag ID.
+db (Session): Database session.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Tag | None: Retrieved tag.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.repository.tags.get_tag_by_name">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.repository.tags.</span></span><span class="sig-name descname"><span class="pre">get_tag_by_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tag_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tag</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#src.repository.tags.get_tag_by_name" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieve a tag by its name.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>tag_name (str): Tag name.
+db (Session): Database session.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Tag | None: Retrieved tag.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.repository.tags.get_tags">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.repository.tags.</span></span><span class="sig-name descname"><span class="pre">get_tags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Tag</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#src.repository.tags.get_tags" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieve all tags.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>db (Session): Database session.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Sequence[Tag]: Sequence of tags.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.repository.tags.remove_tag_by_name">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.repository.tags.</span></span><span class="sig-name descname"><span class="pre">remove_tag_by_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tag_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tag</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#src.repository.tags.remove_tag_by_name" title="Link to this definition">¶</a></dt>
+<dd><p>Remove a tag by its name.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>tag_name (str): Tag name.
+db (Session): Database session.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Tag | None: Removed tag.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.repository.tags.tag_create">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.repository.tags.</span></span><span class="sig-name descname"><span class="pre">tag_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TagModel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tag</span></span></span><a class="headerlink" href="#src.repository.tags.tag_create" title="Link to this definition">¶</a></dt>
+<dd><p>Create a new tag.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>body (TagModel): Tag data.
+db (Session): Database session.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Tag: Created tag.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.repository.tags.update_tag">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.repository.tags.</span></span><span class="sig-name descname"><span class="pre">update_tag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tag_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TagModel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tag</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#src.repository.tags.update_tag" title="Link to this definition">¶</a></dt>
+<dd><p>Update a tag by its ID.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>tag_id (int): Tag ID.
+body (TagModel): New tag data.
+db (Session): Database session.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Tag | None: Updated tag.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-src.repository.users">
+<span id="rest-api-repository-users"></span><h1>REST API repository users<a class="headerlink" href="#module-src.repository.users" title="Link to this heading">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="src.repository.users.confirmed_email">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.repository.users.</span></span><span class="sig-name descname"><span class="pre">confirmed_email</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.repository.users.confirmed_email" title="Link to this definition">¶</a></dt>
+<dd><p>Confirm user email.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>email (str): User email.
+db (Session): Database session.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.repository.users.create_user">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.repository.users.</span></span><span class="sig-name descname"><span class="pre">create_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">UserSchema</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.repository.users.create_user" title="Link to this definition">¶</a></dt>
+<dd><p>Create a new user.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>body (UserSchema): User data.
+db (Session): Database session.</p>
+</dd>
+<dt>Returns:</dt><dd><p>User: Created user.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.repository.users.get_total_users_count">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.repository.users.</span></span><span class="sig-name descname"><span class="pre">get_total_users_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.repository.users.get_total_users_count" title="Link to this definition">¶</a></dt>
+<dd><p>Get total count of users.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>db (Session): Database session.</p>
+</dd>
+<dt>Returns:</dt><dd><p>int: Total count of users.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.repository.users.get_user_by_email">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.repository.users.</span></span><span class="sig-name descname"><span class="pre">get_user_by_email</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.repository.users.get_user_by_email" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieve a user by their email.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>email (str): User email.
+db (Session): Database session.</p>
+</dd>
+<dt>Returns:</dt><dd><p>User: Retrieved user.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.repository.users.get_user_by_username">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.repository.users.</span></span><span class="sig-name descname"><span class="pre">get_user_by_username</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.repository.users.get_user_by_username" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieve a user by their username.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>username (str): User username.
+db (Session): Database session.</p>
+</dd>
+<dt>Returns:</dt><dd><p>User: Retrieved user.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.repository.users.update_avatar_url">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.repository.users.</span></span><span class="sig-name descname"><span class="pre">update_avatar_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">User</span></span></span><a class="headerlink" href="#src.repository.users.update_avatar_url" title="Link to this definition">¶</a></dt>
+<dd><p>Update user avatar URL.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>email (str): User email.
+url (str | None): Avatar URL.
+db (Session): Database session.</p>
+</dd>
+<dt>Returns:</dt><dd><p>User: Updated user.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.repository.users.update_token">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.repository.users.</span></span><span class="sig-name descname"><span class="pre">update_token</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">User</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.repository.users.update_token" title="Link to this definition">¶</a></dt>
+<dd><p>Update user token.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>user (User): User instance.
+token (str | None): Refresh token.
+db (Session): Database session.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="rest-api-routes-auth-routes">
+<h1>REST API routes auth_routes<a class="headerlink" href="#rest-api-routes-auth-routes" title="Link to this heading">¶</a></h1>
+</section>
+<section id="rest-api-routes-comments-routes">
+<h1>REST API routes comments_routes<a class="headerlink" href="#rest-api-routes-comments-routes" title="Link to this heading">¶</a></h1>
+</section>
+<section id="rest-api-routes-link-routes">
+<h1>REST API routes link_routes<a class="headerlink" href="#rest-api-routes-link-routes" title="Link to this heading">¶</a></h1>
+</section>
+<section id="rest-api-routes-photo-routes">
+<h1>REST API routes photo_routes<a class="headerlink" href="#rest-api-routes-photo-routes" title="Link to this heading">¶</a></h1>
+</section>
+<section id="rest-api-routes-tags-routes">
+<h1>REST API routes tags_routes<a class="headerlink" href="#rest-api-routes-tags-routes" title="Link to this heading">¶</a></h1>
+</section>
+<section id="rest-api-routes-user-routes">
+<h1>REST API routes user_routes<a class="headerlink" href="#rest-api-routes-user-routes" title="Link to this heading">¶</a></h1>
+</section>
+<section id="rest-api-service-auth-service">
+<h1>REST API service auth_service<a class="headerlink" href="#rest-api-service-auth-service" title="Link to this heading">¶</a></h1>
+</section>
+<section id="rest-api-service-cloudinary-service">
+<h1>REST API service cloudinary_service<a class="headerlink" href="#rest-api-service-cloudinary-service" title="Link to this heading">¶</a></h1>
+</section>
+<section id="rest-api-service-email-service">
+<h1>REST API service email_service<a class="headerlink" href="#rest-api-service-email-service" title="Link to this heading">¶</a></h1>
+</section>
+<section id="rest-api-service-role-service">
+<h1>REST API service role_service<a class="headerlink" href="#rest-api-service-role-service" title="Link to this heading">¶</a></h1>
+</section>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="#">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Welcome to PhotoShare’s documentation!</a></li>
+<li><a class="reference internal" href="#rest-api-main">REST API main</a></li>
+<li><a class="reference internal" href="#rest-api-repository-comments">REST API repository comments</a><ul>
+<li><a class="reference internal" href="#src.repository.comments.create_comment"><code class="docutils literal notranslate"><span class="pre">create_comment()</span></code></a></li>
+<li><a class="reference internal" href="#src.repository.comments.delete_comment"><code class="docutils literal notranslate"><span class="pre">delete_comment()</span></code></a></li>
+<li><a class="reference internal" href="#src.repository.comments.update_comment"><code class="docutils literal notranslate"><span class="pre">update_comment()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#rest-api-repository-image-link">REST API repository image_link</a></li>
+<li><a class="reference internal" href="#rest-api-repository-photo">REST API repository photo</a></li>
+<li><a class="reference internal" href="#module-src.repository.tags">REST API repository tags</a><ul>
+<li><a class="reference internal" href="#src.repository.tags.get_tag_by_id"><code class="docutils literal notranslate"><span class="pre">get_tag_by_id()</span></code></a></li>
+<li><a class="reference internal" href="#src.repository.tags.get_tag_by_name"><code class="docutils literal notranslate"><span class="pre">get_tag_by_name()</span></code></a></li>
+<li><a class="reference internal" href="#src.repository.tags.get_tags"><code class="docutils literal notranslate"><span class="pre">get_tags()</span></code></a></li>
+<li><a class="reference internal" href="#src.repository.tags.remove_tag_by_name"><code class="docutils literal notranslate"><span class="pre">remove_tag_by_name()</span></code></a></li>
+<li><a class="reference internal" href="#src.repository.tags.tag_create"><code class="docutils literal notranslate"><span class="pre">tag_create()</span></code></a></li>
+<li><a class="reference internal" href="#src.repository.tags.update_tag"><code class="docutils literal notranslate"><span class="pre">update_tag()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-src.repository.users">REST API repository users</a><ul>
+<li><a class="reference internal" href="#src.repository.users.confirmed_email"><code class="docutils literal notranslate"><span class="pre">confirmed_email()</span></code></a></li>
+<li><a class="reference internal" href="#src.repository.users.create_user"><code class="docutils literal notranslate"><span class="pre">create_user()</span></code></a></li>
+<li><a class="reference internal" href="#src.repository.users.get_total_users_count"><code class="docutils literal notranslate"><span class="pre">get_total_users_count()</span></code></a></li>
+<li><a class="reference internal" href="#src.repository.users.get_user_by_email"><code class="docutils literal notranslate"><span class="pre">get_user_by_email()</span></code></a></li>
+<li><a class="reference internal" href="#src.repository.users.get_user_by_username"><code class="docutils literal notranslate"><span class="pre">get_user_by_username()</span></code></a></li>
+<li><a class="reference internal" href="#src.repository.users.update_avatar_url"><code class="docutils literal notranslate"><span class="pre">update_avatar_url()</span></code></a></li>
+<li><a class="reference internal" href="#src.repository.users.update_token"><code class="docutils literal notranslate"><span class="pre">update_token()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#rest-api-routes-auth-routes">REST API routes auth_routes</a></li>
+<li><a class="reference internal" href="#rest-api-routes-comments-routes">REST API routes comments_routes</a></li>
+<li><a class="reference internal" href="#rest-api-routes-link-routes">REST API routes link_routes</a></li>
+<li><a class="reference internal" href="#rest-api-routes-photo-routes">REST API routes photo_routes</a></li>
+<li><a class="reference internal" href="#rest-api-routes-tags-routes">REST API routes tags_routes</a></li>
+<li><a class="reference internal" href="#rest-api-routes-user-routes">REST API routes user_routes</a></li>
+<li><a class="reference internal" href="#rest-api-service-auth-service">REST API service auth_service</a></li>
+<li><a class="reference internal" href="#rest-api-service-cloudinary-service">REST API service cloudinary_service</a></li>
+<li><a class="reference internal" href="#rest-api-service-email-service">REST API service email_service</a></li>
+<li><a class="reference internal" href="#rest-api-service-role-service">REST API service role_service</a></li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">PhotoShare  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Welcome to PhotoShare’s documentation!</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2024, PythonStars.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>
