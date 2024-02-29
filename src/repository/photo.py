@@ -223,7 +223,7 @@ async def black_white_photo(image_id, db: Session, user: User):
         user_id=user.id
     )
 
-    return ImageChangeResponse(image=image_model, detail="Image with fade effect has been added")
+    return ImageChangeResponse(image=image_model, detail="Image with black_white effect has been added")
 
 
 async def add_tag(image_id: int, tag_name: str, db: Session, user: User):
