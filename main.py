@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi_limiter import FastAPILimiter
 
 from src.conf.config import settings
-from src.routes import photo, tags_routes, comments_routes, links_routes, auth_routes, user_routes
+from src.routes import photo_routes, tags_routes, comments_routes, links_routes, auth_routes, user_routes
 
 
 app = FastAPI()
@@ -23,7 +23,7 @@ app.add_middleware(
 
 app.include_router(auth_routes.router, prefix="/api")
 app.include_router(user_routes.router, prefix="/api")
-app.include_router(photo.router, prefix='/api')
+app.include_router(photo_routes.router, prefix='/api')
 app.include_router(tags_routes.router, prefix='/api')
 app.include_router(comments_routes.router, prefix='/api')
 app.include_router(links_routes.router, prefix='/api')
