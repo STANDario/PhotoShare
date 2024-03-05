@@ -6,7 +6,7 @@ from src.entity.models import Image, Tag, User
 from src.services.cloudinary_service import CloudImage
 from src.schemas.photo_schemas import ImageChangeResponse, ImageModel
 from src.schemas.tag_schemas import TagModel, AddTagToPhoto
-from src.routes.tags_routes import create_tag
+from src.routes.tags import create_tag
 
 
 async def add_image(url: str, public_id: str, description: str, db: Session, user: User) -> Image | None:
